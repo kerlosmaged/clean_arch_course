@@ -1,0 +1,176 @@
+lesson 71 we talk about login useCase 
+
+we need to create an this object from useCase because need excute function and this function need an Repository and this Repository abstract class you create in domain layer but in the data layer you implement this class and you will return failure or Autheticatin MODEL and your reponse will return from remote data source class 
+
+1- we connect the response will return from data layer or request
+
+2- go to the mapper to make the response is model
+----------------------------------------------------------------------
+
+in lesson 78 we talk about Adding forgot password and Register TextButton and fix the error in ui in login view
+
+1-  but the color in login scaffold not in container 
+2- wrape the login button with sizeBox and set the width double.infinity and the height because we need the button take an width of the screen
+3- set the forgetPassword and the register button  
+4- set the theme for this buttons like skip button on boarding scree 
+
+----------------------------------------------------------------------
+// new section Dependency injction Generic Note
+
+in login_view_model => need in constractor an object of login_usecase
+
+in login_usecase => need in constractor an object of repository 
+repository is abstract class so we can't make instance from it so will make instance from repository_impl class because this is class implementes from  abstract repository class 
+
+ in repository_ impl constractor => need in constractor Remote_Data_Source , _networkInfo 
+
+in Remote_Data_Source  class is abstract class  => so we will create an instance from Remote_Data_Source_impl 
+
+and so on => this is problem called Dependency injection every constractor is depend on another instance and class (this is problem and not clean code )  
+
+and on all of classes we will create it needed this is initsionlization so => Dependency injection solve this problem
+
+to create Dependecy injection need third party or package in flutter called (Get_it)
+
+Dependecy injection this is place used on the all place in the application so need to create in application layer 
+
+* app_prefrenceses this is a generic dependecies so we but this in initAppModule 
+
+*create future function initLoginMoudle this is function for any Dependancy for login only like (login view model , login use case , login repository
+
+
+NOTE: Module for only one thing => we need to call this LoginModule function so we call it in route file before we go to this screen (login screen )
+
+NOTE: appModule or generic module => this is module create for the all of app so we put here in app or main method
+
+----------------------------------------------------------------------
+
+in lesson 79 we talk about Dependency injction instances
+
+
+* first ex: for app_prefernces
+1- create the sharedPrefernces instance
+2- and create instance from AppPreferences class in this AppPrefernces we need to put the argumante in constractor and this argumante type is (SharedPrefernces) so we put the instance we did create it in the previous step 
+
+instance.register => in this register have a lot of options
+ 
+1- registerFactory => this is register mean on every time you call it will create a new instance in memory 
+
+2- registerSingleton => in this registerSingleton will create an one instance only and use it every time you will call it but in this case mean when this instance create will add in the GetIt 
+
+3-registerLazySingleton => in this registerSingleton will create an one instance only and use it every time you will call it but in this case mean when this instance called only  will add in the GetIt => so this is best more than registerSingleton
+
+* NOTE: in app module you have an objects you will call it in the all of the app ( in every place on the application so you need create it Singleton because it don't need any changing this need an only single instance from this object ) 
+
+*NOTE: when you will need to add the instance in dependency injection remember if this instance you will need it Generic so you need an one instance to create it => because this instance will save the all of data in the app like ( in app prefernces )
+
+*Note: the class myApp you create it for run the application you create it singleto but the manual way 
+
+*Note: when create the instance from the class think about  this is abstract class or generic class if this class is abstract class => so we will put the instance from the implmenter from this class , but if this is generic class we will but the this class 
+
+* abstract class => networInfo , Repository ,.....
+* generic class => app services , ...
+
+
+steps 
+
+1- in application layer create an file called Dependecy injection or (di)
+
+2- create an instance (نموذج) in di file => final instance = GetIt.instance => so this Dependecy injection  will show on the all of the application and can use this Dependecy injection from this instance 
+
+3- create  future function for the AppModule => in app module , its a module where we put all generic Dependency injection 
+
+4- will create sharedPrefrences instance the normal way => final sharedPrefs = await SharedPrefernces.getInstance();
+
+5- will add this instance from sharedPrefrences to GetIt in regestirLazySingleton and choose specific the Generic type for this instance => instance.registerLazySingleton<SharedPrefernces>(()=> sharedPrefs); // this sharedPrefs we create it before in the previous step
+
+6- create an instance from AppPrefernces class this class we create it need an prametare in constractor from type SharedPrefernces => instance.registerLazySingleton<AppPrefernces>
+
+----------------------------------------------------------------------
+
+// in lesson 80 we will talk about the add dependency injection instances for initAppModule => the generic dependency singleton
+
+what we will create in this lesson
+1- instance from => network_info and this is need on constractor an argumante from network_connection_checker 
+
+NOTE: 	you will create an generic type from abstract class not impl class because you create this class impl have will implements from abstract class 
+
+ex: in networkInfo && networkInfoImpl => instansce.registerLazySingleton<NetworkInfo>(()=> NetworkInfoImpl(InternetConnectionChecker));
+
+networkInfo => is abstract class
+
+networkInfoImpl => is a class implementes from networkInfo
+
+InternetConnectionChecker => this is instance from the internetConnection package you used it 
+
+
+
+2- dio factory => need instance from app prefrences we create it already
+
+3- app service client => need instance from dio
+
+in app service will need an Dio object not Dio Factory so we have an two way for create the this Dio object 
+
+1- this is first way and wrong way 
+
+DioFactory dioFactory = DioFactory(_appPrefernces);
+Dio dio = await dioFactory.getDio();
+
+instance.registerLazySingleton<AppServiceClient>(() => AppServiceClient(dio));
+
+this is wrong way 
+
+2- this is accepted way
+
+Dio dio = await instance<DioFactory>().getDio(); // in this case we used GetIt to get this instance 
+
+this is good way
+
+4- remote data source => appServices client
+
+5- repository instance => remoteDataSource , networkInfo
+
+
+----------------------------------------------------------------------
+
+// in lesson 81 we will talk about Add Dependency injection login module
+
+here we used registerFactory because we don't need an set this instance in memory when create it like in general module we need an registerFactory because we create this instanc only once when used it and after this will remove 
+
+what is need to create it for login module
+1- loginUseCase => repository
+
+2-loginViewModel => loginusecase
+
+we need to make an checking about the instance in loginModule if this instance create it on getIt before don't make it again 
+
+
+ex about loginUseCase => 
+
+if(!GetIt.I.isRegistered<LoginUseCase>()){
+create the instance for this instance	 
+}
+
+* we will but this function in route manager before we go to the login class 
+
+* we will but the appFuntion in main method 
+
+* we will add flutterIsBinding.ensureInitialized in main method
+
+----------------------------------------------------------------------
+
+// in lesson 82 we will talk about How to use it dependency injection 
+
+we don't use the constractor in login_view class for LoginViewModel so we will used instance 
+
+instance<LoginViewModel>();
+
+anyInstance need it we will replace the LoginViewModel and put the name what we need it
+
+----------------------------------------------------------------------
+
+// in lesson 83 we will talk about make app makes http request because the devices don't support http request 
+
+but in my state we have an https url so don't work with this video 
+----------------------------------------------------------------------
+

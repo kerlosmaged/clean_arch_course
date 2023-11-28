@@ -1,0 +1,423 @@
+// in this file we will talk about the state renderer section 
+
+----------------------------------------------------------------------
+
+// in lesson 84 we will talk about testing login api we will enter the user name and the password and after this we will use the login function and we will wait for the response return 
+
+----------------------------------------------------------------------
+
+// in lesson 85 we will talk about showing popup state renderer this is for showing what will doing in the future
+
+----------------------------------------------------------------------
+
+// in lesson 86 we will talk about showing full screen state renderer 
+
+Note: when you need to show popup state and show full screen state
+
+1- popup state => this is state we need to show if the data in the current screen don't need to hide all of it =>
+
+ex: in login screen we need to popup state because we don't need to hide the current state or current data into the screen
+
+2- full state => this is state we need to show if the data in the current screen need to hide all of it
+ 
+ex: in home screen the data will return from the api so if the data will show for the user before will get it will make the ui for the screen ugly so her we need the full screen state renderer
+
+----------------------------------------------------------------------
+
+// in lesson 87 we will talk about implementation for state renderer 
+
+1- state renderer this is ui so we will put her iside the presentation layer 
+
+2- this is consept of state renderer is comman or will used in every place at the application so will put it in comman package 
+
+3- we will devide the state in the application 
+
+// this is spacfic types 
+
+* popup states (Dialog) 
+  in popup states we have 
+
+1- popup_loading_state
+
+2- popup_error_state 
+
+* full screen states (full screen ) 
+  in full states we have 
+
+1- full_screen_loading_state
+2- full_screen_error_state
+3- full_screen_empty_state
+
+// we have general state this is 
+
+contentState
+
+* we will start to make an implementation 
+1- create an class stateLessWidget for show this is all of states 
+
+for make this state renderer work need to put four parameter 
+
+NOTE: in this is lesson will make failure object but will remove it because will used message and title
+
+1- StateRendererType => this  is because will switch from types and show spacifc data for every state type
+ex:
+if popup_loading_state => show data for this state
+
+if popup_error_state => show data for this state and this is different then popup_loading_state
+
+and make it for every stateRendererType
+
+2- String message => for show in the error state
+
+we will make it message have an default message and this is default message will be loading and maybe will change it in some cases
+
+3- String title => for show in the error state but here will be the title
+
+4- Function => retryActionFunction will make in error state 
+
+----------------------------------------------------------------------
+
+// in lesson 88 we talk about adding state renderer implementation part 2 
+
+we will talk about addin ui 
+
+so => we can create ui or we can get the difference widgets for every ui when we switch between the stateRendererTypes so .....
+
+1- create switch between the stateRendererTypes
+
+so to devide everyThing in this getWidgets we need to create 
+
+2- create _getItemColumnWidget this is return an column widget and iside this column return the data for every state and get the list of this parameter items on constractor type for this is list is list<Widget>
+
+----------------------------------------------------------------------
+
+// in lesson 89 we will talk about adding state renderer implementation part 3
+
+in this lesson we will talk about how work with _getColumnDataWidget we create it in previous lesson 
+
+so we will used this function inside every stateType and every state need a some of data and this data will difference between every state
+--------------------------------
+
+we create here state loading for full screen 
+
+1- in full state renderer type => we will create an animated json and text so we need create an function for manage this animated json and put this function iside this _getItemColumnDataWidget 
+
+*  create function for animated json and this function will have an sizeBox with height and widht and child lottlie package for manage this json image 
+
+* create function for getMessage for the every state and this is function have an text widget and this is text have this message and have the style and this is message will put from the message we get it from the main constractor for this class 
+
+* put this function and the text inside the _getColumnDataWidget()
+
+------------------------------------
+
+we create her error state renderer for full screen 
+
+
+and  her iside this state we need to set the function for handling button and we need to make this button title dynamic because this title will change from state to another 
+
+so....
+
+1- create image json or animated image for error state full screen
+
+2- create message or title for this error in full screen
+
+3- create button for the error in this screen => but here in every error button we need it we need an spcefic title for full screen and for popup so this title will be an dynamic 
+
+so in lesson 89 we will create an ui for full loading state and full error state 
+
+
+----------------------------------------------------------------------
+
+// in lesson 90 we will talk about adding state renderer implemntation part 4
+
+1- create an this button take an width for the all of this screen  and will wrapp this button by sizeBox and padding put the size for this padding 18 and center 
+and create this for the text also
+
+2- for manage the button in the all of error state we have an two state 
+1- popup => this is when you click on the button will desmis the dialog ( close the dialog )
+2- full screen => will call the retry function and this is retry function we create it take in the constractor for this class so we will call it only 
+
+so the result is 
+
+if (stateRendererType.errorPopup == the state renderertype you entered ) {
+here will make this dismis for this dialog ;
+}else{
+// her we will call the the retryFunction 
+retryfunction.call
+}
+
+----------------------------------------------------------------------
+
+// in lesson 91 we will talk about adding state renderer implementation part 5 
+
+here we will talk about ui  for popup state (loading , error) 
+
+we will show the dialog and make the backgroud transparent or add color for backgroud 
+
+1- create function called  _getPopupDialog() 
+
+this is main fuction for return this popupDialog and will return Dialog() and this
+
+inside this dialog will add the color for the dialog and backgroud color and create the child for this dialog is container and will create function for this 
+
+
+so in this lesson we will create an Main Dialog for this popup and will ente
+
+----------------------------------------------------------------------
+
+// in lesson 92 we will talk about adding state renderer implementation part 6
+
+in previous lesson we create the ui for the main dialog and in her lesson we will create the contant for every state like the image and the button and text 
+
+we will create an new function similler _getColumn in full screen 
+
+but the different we need to dynamic in this height for every state so we need this new attribute is minAxies 
+
+NOTE:  in lesson we create new function and will make this new attribute and work with new function 
+
+but i will create  : bool attrbute in the column function and for every state we will look about this attribute => this is idea is worked 
+
+* for full empty state we will create animated image and text only 
+
+* for content state we will put container empty 
+ 
+----------------------------------------------------------------------
+
+// in lesson 93 we will talk about adding state renderer implementation part 7
+
+we will talk her about lottile package for animated json image 
+
+1- download lottile json files 
+
+2- add lottile pakcage in the pubsepec file
+
+3- add this is json files to the pubsepec file 
+
+4- use lottie package in the state renderer file 
+
+----------------------------------------------------------------------
+
+// in lesson 94 we will talk about state renderer implementer 
+
+this is implementer we create because bind between state renderer (view for state renderer) and the view we create it for every screen 
+
+1- create new file called state_renderer_impl
+
+2- create  abstract class for the flow of the screen 
+
+disscuss: we have alot of flows in screen like (content flow , loading flow , error flow , ....) 
+so we need state renderer type for this class because this is type will handle this states 
+
+and for every state we will create it will need it extend from FlowState 
+
+so => we need create an FlowState this is for changing between your screen states(loading ,error, empty ,...) 
+
+so what we will create 
+
+1- state renderer type function =>  because any state we will create it need to extend form this flow state 
+
+2-  getMessage function => because will return message for every state 
+
+and now we will use it in the states 
+
+1- flow state in loading state and this is loading state have two types (popup , full screen ) 
+
+and this is loading state need stateRendererType because we have two types of loading(popup , full screen) 
+
+so this is loadingState class need  =>
+1- StateRendererType 
+2- string message 
+
+and this is loadingState will connect with your view and the state renderer type 
+
+----------------------------------------------------------------------
+
+// in this lesson 95 we will talk about applying state renderer (error state , empty state , content state)
+
+*error state
+
+1- we create an error state and this is state need message from error so this is message will be requerid
+
+2- we create an stateRendererType also because this is will return wiche type we needed ( popup , full) 
+
+*content state
+
+this is state will be simple state because don't need any thing will return only the current content so will create 
+
+1- the message will return empty message 
+
+2- state renderer type will return the content state renderer type 
+
+*empty state
+
+this is state will need the image for this empty and the message 
+
+1- json image => will return for this state is empty 
+
+2- message => will return for this state is no data and this is message we need it to be dynamic 
+
+----------------------------------------------------------------------
+
+// in lesson 96 we will talk about extension on state renderer implemnter 
+
+in this is lesson we will talk about the extension function for your FlowState, but why need this ?
+
+you need this extension because this is will controlle in your screens if the screen now have the content so => will show the content 
+
+if the screen no have the loading => so will show the loading 
+
+so......
+
+you will create 
+
+1- extension on FlowState
+
+2- getScreenWidget => this is magic method or function will return the current screen data 
+
+3- this is function need some parameter => context, Widget contentWidget or current content , retry function 
+
+4- switch cases about the all of cases you have in screens but here we have a problem what is value we need it to switch => in course will switch about the current => runTimeType  
+
+* but i need to test types of states in enum 
+
+* and this function the view will call it and this function will call the stateRenderer UI 
+
+so the order is 
+
+1- view call state renderer impl
+	view =< state renderer impl
+
+2- state renderer impl will call the state rendererUI
+	state renderer impl =< state rendererUI
+
+3- state rendererUI will send the data for state renderer impl 
+	state rendererUI =< state renderer impl
+4- state renderer impl will send the data for the view and this is last step 
+	state renderer =< viwe
+
+
+----------------------------------------------------------------------
+
+// in lesson 97 we will talk about adding implementation for loading state case
+
+we have two types of loading so we need to check which one needed because return value will changing 
+
+1- in case popup loading we need to return this ui for popup loading and content ui of the screen 
+
+in popup we have two state (error , loading ) so we need to show this is dialog 
+
+will create an function will take an context , stateRendererType ,message 
+and this function will show dialog 
+
+so in this lesson we put or create the loading state 
+
+----------------------------------------------------------------------
+
+// in lesson 98 we will talk about Adding implementation for ( Error state , Empty state , content state , default ) 
+
+1-  in default and in content state we will send the current => contentScreenWidget 
+
+2- in empty state we will return state renderer for this is state have => State renderer type get state renderer from state flow , message have get message from state flow and will send the current retry action function this is don't do anyThing but will send 
+
+but in this case will send empty function because we don't use this function in anyThing 
+
+3- in Error State we will make like loading state we  have an popup case and full screen case 
+
+this is function we will used in ui or the screens to get the content screen 
+
+----------------------------------------------------------------------
+
+// in lesson 99 we will talk about handling showing many popup dialogs
+
+we will talk about when you will show loading state and will show the error will show on the loading all of this up of
+ (يعني لو عندنا تحميل وعاوزين نظهر غلط هيطلعو كلهم فوق بعض) 
+
+NOTE: this is lesson don't work and not have an internet in the cafe  so will work and see this is lesson in the home
+
+----------------------------------------------------------------------
+
+// in lesson 100 we will talk about Adding input Stream Controller inside Base View Model 
+
+from this lesson we will start talk about how can handle the states from view_model response 
+
+1- we review the past work 
+
+* we create FlowState => this is base class we extends from it 
+* we create class for all state => 
+class for loading (popup , full screen) 
+class for error (popup , full screen)
+class for empty 
+class for content 
+* the view will connected with state_renderer_imple
+* create the magic function for handle everyThing in this states 
+* create dialog dismiss if any dialog is opened 
+
+2- we create base_view_model for state renderer we need to create this view model in base view model file because we will use it in every place at the project  
+
+so we create streamController have type flowState and we need it have many listeners so need it ( broadCase)
+
+3- will create override for dispose in baseViewModel to close this stream controller 
+
+so.. => in base view model we will create dispose and in view_model for login we create dispose but need put super in login_view_model because import what we create in base_view_model 
+
+4- we will create sink and stream for this stream controller 
+
+5- create override for this stream and sink in baseviewModel 
+
+6- we will need to use start function 
+
+----------------------------------------------------------------------
+
+// in lesson 101 we will talk about updating login view with flow state controller 
+
+we will use stream builder  in home for login view 
+
+----------------------------------------------------------------------
+
+// in lesson 102 we will talk about updating login viewModel with flow state controller 
+
+we will use inpuStreamrenderer.add(loading state when you click on login button ) and after end login we will return if error or success and handle every state 
+
+so we create loading state in login 
+
+if return an error will return an error state 
+
+else if have data will return content state because we will dismiss the dialog and after this go to main screen
+
+----------------------------------------------------------------------
+
+// in lesson 103 we talk about Testing state renderer implementation 
+
+we need stream controller for go to home 
+
+we don't need to broadcast because here we listen only once time 
+
+we will close this stream controller 
+
+we will add true if the login function will return login success
+
+we will go to view and listen about this stream controller 
+
+we will create condition about this data returned from this stream controller 
+
+if this data returned true so will navigat to main screen 
+
+Note: on stream controller we can't go to the main screen direct we need an instance of SchedulerBinding and iside this function will navigat to main class 
+
+----------------------------------------------------------------------
+
+// in lesson 105 we will talk about handling Updating routes navigation with app prefernces
+
+what we need to do => need to update the data in shared_preferences if the user show the onboarding set true , if login true set login is true on shared preferences 
+
+1- in shared prefrences file => create two function to set the data for (setOnboardingViewed, setLoginInIsTrue)
+
+2- in shared prefrences file => create two function to get the data from this shared_prefrences (getOnBoardingViewed, getLoginTrue)
+
+* to set value in shared prefrences need to key 
+
+3- we will go to onboarding_view and create instance from appPrefrences but this instance from (getIt ) and set onBoarding view 
+
+4- we will go to login_view and if set is userName loged in before navigat to main function 
+
+5- we will get function isUserLoggedIn.then(her we will check the value )
